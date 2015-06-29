@@ -23,7 +23,7 @@ var mouseDown = false;
 var i;
 var keys = [];
 var pixelOffset = 30;
-// keys[0] = left, keys[1] = right; 2->up, 3->down, 4->alt key
+// keys[0] = left, keys[1] = right; 2->up, 3->down, 4->alt key, 5->spacebar
 // 0->not pressed, 1->pressed
 
 var distance;
@@ -44,18 +44,16 @@ window.requestAnimFrame = (function(){
 
 initialize();
 startScreen();
-// (function animate(){
-//   requestAnimFrame(animate);
-//   drawStars();
-//   moveStars();
-//   drawScores();
-// })(); // call function immediately after defining it
 
 function animate(){
-  requestAnimFrame(animate);
-  drawStars();
-  moveStars();
-  drawScores();
+  if (keys[5] == 1) { // spacebar pressed - game paused
+    pauseScreen();
+  } else {
+    requestAnimFrame(animate);
+    drawStars();
+    moveStars();
+    drawScores();
+  }
 }
 
 /************************************/
@@ -228,6 +226,18 @@ function startScreen() {
   c.fillText("play", centerX, centerY);
 }
 
+function pauseScreen() {
+  c.fillStyle='rgba(0,0,0,0.5)';
+  c.fillRect(0,0,canvas.width,canvas.height);
+  
+  // title
+  c.font = "bold 48px sans-serif";
+  c.textAlign = "center";
+  c.textBaseline = "bottom";
+  c.fillStyle = "white";
+  c.fillText("paused", centerX, canvas.height*3/8);
+}
+
 document.addEventListener('keydown', function(event) {
     if (event.keyCode == 37) { // left
       keys[0] = 1;
@@ -242,6 +252,10 @@ document.addEventListener('keydown', function(event) {
   
     if (event.keyCode == 18) { // alt key
       keys[4] = 1;
+    }
+
+    if (event.keyCode == 32) { // spacebar
+      keys[5] = 1;
     }
 });
 
@@ -260,32 +274,31 @@ document.addEventListener('keyup', function(event) {
     if (event.keyCode == 18) { // alt key
       keys[4] = 0;
     }
+
+    if (event.keyCode == 32) { // spacebar
+      keys[5] = 0;
+    }
 });
+
+function showPlayBox(fillColor, textColor) {
+  // play box
+  c.fillStyle = fillColor;
+  c.fillRect(centerX-boxWidth/2, centerY-boxHeight/2, boxWidth, boxHeight);
+
+  // play text
+  c.font = "bold 40px sans-serif";
+  c.textAlign = "center";
+  c.textBaseline = "middle";
+  c.fillStyle = textColor;
+  c.fillText("play", centerX, centerY);
+}
 
 document.addEventListener('mousemove', function(event) {
     if (event.x > centerX-boxWidth/2 && event.x < centerX+boxWidth/2 &&
         event.y > centerY-boxHeight/2 && event.y < centerX+boxHeight/2) {
-      // play box
-      c.fillStyle = "black";
-      c.fillRect(centerX-boxWidth/2, centerY-boxHeight/2, boxWidth, boxHeight);
-
-      // play text
-      c.font = "bold 40px sans-serif";
-      c.textAlign = "center";
-      c.textBaseline = "middle";
-      c.fillStyle = "white";
-      c.fillText("play", centerX, centerY);
+      showPlayBox("black", "white");
     } else {
-      // play box
-      c.fillStyle = "white";
-      c.fillRect(centerX-boxWidth/2, centerY-boxHeight/2, boxWidth, boxHeight);
-
-      // play text
-      c.font = "bold 40px sans-serif";
-      c.textAlign = "center";
-      c.textBaseline = "middle";
-      c.fillStyle = "black";
-      c.fillText("play", centerX, centerY);
+      showPlayBox("white", "black");
     }
 });
 
