@@ -48,6 +48,8 @@ startScreen();
 function animate(){
   if (keys[5] == 1) { // spacebar pressed - game paused
     pauseScreen();
+    showPlayBox("white", "black");
+    keys[5] = 0;
   } else {
     requestAnimFrame(animate);
     drawStars();
