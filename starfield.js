@@ -23,7 +23,7 @@ var mouseDown = false;
 var i;
 var keys = [];
 var pixelOffset = 30;
-// keys[0] = left, keys[1] = right; 2->up, 3->down, 4->spacebar
+// keys[0] = left, keys[1] = right; 2->up, 3->down, 4->alt key
 // 0->not pressed, 1->pressed
 
 var distance;
@@ -87,7 +87,7 @@ function moveStars(){
   for(i = 0; i < numStars; i ++){
     star = stars[i];
     
-    if (keys[4] == 1) { // spacebar pressed
+    if (keys[4] == 1) { // alt key pressed
       if (zSpeed < 30) {
         zSpeed += 0.001;
       }
@@ -240,9 +240,9 @@ document.addEventListener('keydown', function(event) {
       keys[3] = 1;
     }
   
-  if (event.keyCode == 32) { // spacebar
-    keys[4] = 1;
-  }
+    if (event.keyCode == 18) { // alt key
+      keys[4] = 1;
+    }
 });
 
 document.addEventListener('keyup', function(event) {
@@ -257,9 +257,9 @@ document.addEventListener('keyup', function(event) {
       keys[3] = 0;
     }
   
-  if (event.keyCode == 32) { // spacebar
-    keys[4] = 0;
-  }
+    if (event.keyCode == 18) { // alt key
+      keys[4] = 0;
+    }
 });
 
 document.addEventListener('mousemove', function(event) {
